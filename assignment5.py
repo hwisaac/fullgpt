@@ -89,7 +89,9 @@ def build_rag_chain():
     )
 
     # 필요에 따라 모델명 변경
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+    llm = ChatOpenAI(
+        model_name="gpt-3.5-turbo", temperature=0, openai_api_key=openai_api_key
+    )
 
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     stuff_chain = StuffDocumentsChain(
