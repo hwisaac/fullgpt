@@ -26,7 +26,7 @@ if openai_api_key:
 st.sidebar.markdown("### Github Repo")
 st.sidebar.markdown("[프로젝트 깃허브 링크](https://github.com/your-repo-url)")
 
-st.title("RAG 파이프라인 데모 - 1984 소설 예시")
+st.title("RAG 파이프라인 데모")
 
 # 세션 스테이트 초기화
 if "memory" not in st.session_state:
