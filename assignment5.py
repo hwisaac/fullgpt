@@ -22,9 +22,6 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key를 입력하세요", type
 if openai_api_key:
     openai.api_key = openai_api_key
 
-# 사이드바: 깃허브 링크
-st.sidebar.markdown("### Github Repo")
-st.sidebar.markdown("[프로젝트 깃허브 링크](https://github.com/your-repo-url)")
 
 st.title("RAG 파이프라인 데모")
 
