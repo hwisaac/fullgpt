@@ -41,7 +41,7 @@ if "uploaded_file" not in st.session_state:
 
 # 파일 업로드
 uploaded_file = st.file_uploader(
-    "문서 파일을 업로드하세요 (예: 1984 일부 텍스트)", type=["txt"]
+    ".txt 문서 파일을 업로드하세요 (예: 1984 일부 텍스트)", type=["txt"]
 )
 if uploaded_file is not None:
     st.session_state["uploaded_file"] = uploaded_file
