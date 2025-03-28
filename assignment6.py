@@ -46,10 +46,8 @@ llm = ChatOpenAI(
     callbacks=[StreamingStdOutCallbackHandler()],
 )
 
-
 def format_docs(docs):
     return "\n\n".join(document.page_content for document in docs)
-
 
 questions_prompt = ChatPromptTemplate.from_messages(
     [
@@ -70,9 +68,28 @@ formatting_prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """
-            You format exam questions into JSON.
-            Questions: {context}
-            """,
+You will transform the given questions into a JSON with this structure:
+
+{{
+  "questions": [
+    {{
+      "question": "string",
+      "options": {{
+        "A": "string",
+        "B": "string",
+        "C": "string",
+        "D": "string"
+      }},
+      "correct_answer": "A"
+    }},
+    ...
+  ]
+}}
+
+Make sure each question has exactly one 'correct_answer' among A, B, C, D.
+Questions:
+{context}
+        """,
         )
     ]
 )
@@ -88,7 +105,6 @@ questions_chain = (
     | llm
 )
 formatting_chain = formatting_prompt | llm
-
 
 @st.cache_data(show_spinner="Loading file...")
 def split_file(file):
@@ -107,12 +123,10 @@ def split_file(file):
     docs = loader.load_and_split(text_splitter=splitter)
     return docs
 
-
 @st.cache_data(show_spinner="Searching Wikipedia...")
 def wiki_search(_term):
     retriever = WikipediaRetriever(top_k_results=5)
     return retriever.get_relevant_documents(_term)
-
 
 @st.cache_data(show_spinner="Generating quiz...")
 def run_quiz_chain(_docs, difficulty):
@@ -120,14 +134,13 @@ def run_quiz_chain(_docs, difficulty):
     formatted = formatting_chain.invoke({"context": raw.content})
     return output_parser.parse(formatted.content)
 
-
 # --- Main Code ---
 
 # docs를 매번 None으로 초기화하고, 선택한 방식을 통해서만 문서를 할당
 docs = None
 topic = None
 
-choice = st.sidebar.selectbox("Choose input source", ("File", "Wikipedia Article"))
+choice = st.sidebar.selectbox("Choose input source", ("File",))
 
 if choice == "File":
     file = st.file_uploader(
