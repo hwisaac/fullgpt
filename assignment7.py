@@ -142,12 +142,12 @@ def load_website():
         "https://developers.cloudflare.com/ai-gateway/",
         "https://developers.cloudflare.com/vectorize/",
         "https://developers.cloudflare.com/workers-ai/",
-        "https://developers.cloudflare.com/workers-ai/models/llama-2-7b-chat-fp16/",
+        "https://developers.cloudflare.com/workers-ai/platform/pricing/",
     ]
 
     loader = WebBaseLoader(urls)
     docs = loader.load_and_split(text_splitter=splitter)
-    vector_store = FAISS.from_documents(docs, OpenAIEmbeddings())
+    vector_store = FAISS.from_documents(docs, OpenAIEmbeddings(api_key=openai_api_key))
     return vector_store.as_retriever()
 
 
